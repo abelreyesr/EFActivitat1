@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using csharp1.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Activitat1.Models;

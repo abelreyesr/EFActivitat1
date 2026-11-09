@@ -1,5 +1,6 @@
 ﻿using Activitat1.Data;
 using Activitat1.Models;
+using csharp1.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace csharp1;
@@ -141,6 +142,18 @@ internal class Program
             {
                 Console.WriteLine(a.ToString());
             }
+            
+            AnimalService service = new AnimalService(ctx);
+            
+            Console.WriteLine("LLISTA D'AUS DISPONIBLES:\n");
+            foreach (Animal au in service.GetDisponibles(Especie.AU))
+            {
+                Console.WriteLine(au.ToString());
+            }
+            
+            Console.WriteLine("ANIMAL AMB XIP 1:"+ service.CercaPerXip("000000000000001"));
+            Console.WriteLine("ANIMAL AMB XIP 12:"); 
+            Console.WriteLine(service.CercaPerXip("000000000000012"));
         }
     }
 }
