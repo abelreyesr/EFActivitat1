@@ -201,7 +201,11 @@ internal class Program
             Console.WriteLine(animal1.ToString());
             Console.WriteLine(adoptant1.ToString());
 
-            
+            foreach (Animal au in animalService.GetDisponibles(Especie.GOS))
+            {
+                Console.WriteLine(au.ToString());
+            }
+
         }
     }
 }

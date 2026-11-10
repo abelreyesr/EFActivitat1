@@ -1,4 +1,5 @@
-﻿using Activitat1.Data;
+﻿using System.Runtime.InteropServices.JavaScript;
+using Activitat1.Data;
 using Activitat1.Models;
 
 namespace csharp1.Services;
@@ -88,6 +89,7 @@ public class AdoptantService
         animal.Adoptant = null;
         animal.EstaAdoptat = false;
         animal.DataAdopcio = null;
+        animal.DataEntrada = DateTime.Today;
 
         ctx.Adoptants.Update(adoptant);
         ctx.Animals.Update(animal);

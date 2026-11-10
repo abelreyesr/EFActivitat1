@@ -15,7 +15,7 @@ public class AnimalService
     public List<Animal> GetDisponibles(Especie especie)
     {
         return ctx.Animals
-            .Where(a => a.Especie == especie)
+            .Where(a => a.Especie == especie && !a.EstaAdoptat)
             .OrderBy(a => a.DataEntrada)
             .ToList();
     }
