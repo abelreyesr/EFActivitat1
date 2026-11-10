@@ -111,7 +111,7 @@ public class AdoptantService
 
         foreach (Adoptant adoptant in adoptants)
         {
-            Console.WriteLine($"{adoptant.Nom} {adoptant.Cognoms}: {adoptant.Animals.Count} animals");
+            Console.WriteLine($"    {adoptant.Nom} {adoptant.Cognoms}: {adoptant.Animals.Count} animals");
         }
     }
 

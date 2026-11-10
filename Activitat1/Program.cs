@@ -207,7 +207,7 @@ internal class Program
             }
 
             adoptantService.LlistatAdoptants(0);
-            adoptantService.LlistatAdoptants(1);
+            adoptantService.LlistatAdoptants(2);
         }
     }
 }
