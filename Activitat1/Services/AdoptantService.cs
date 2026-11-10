@@ -100,4 +100,19 @@ public class AdoptantService
         return true;
     }
 
+    public void LlistatAdoptants(int minAnimals)
+    {
+        Console.WriteLine($"Adoptants amb mínim {minAnimals} animals");
+
+        List<Adoptant> adoptants =  ctx.Adoptants
+            .Where(a => a.Animals.Count >= minAnimals)
+            .OrderByDescending(a => a.Animals.Count)
+            .ToList();
+
+        foreach (Adoptant adoptant in adoptants)
+        {
+            Console.WriteLine($"{adoptant.Nom} {adoptant.Cognoms}: {adoptant.Animals.Count} animals");
+        }
+    }
+
 }

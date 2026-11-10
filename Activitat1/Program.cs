@@ -206,6 +206,8 @@ internal class Program
                 Console.WriteLine(au.ToString());
             }
 
+            adoptantService.LlistatAdoptants(0);
+            adoptantService.LlistatAdoptants(1);
         }
     }
 }
