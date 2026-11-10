@@ -14,6 +14,11 @@ internal class Program
             ctx.Database.EnsureDeleted();
             ctx.Database.EnsureCreated();
 
+            AnimalService animalService = new AnimalService(ctx);
+            AdoptantService adoptantService = new AdoptantService(ctx);
+
+            
+            Console.WriteLine("--------------- PROVES ACTIVITAT 1 ---------------");
             // Crear els 9 xips
             Xip xip1 = new Xip() { Codi = "000000000000001" };
             Xip xip2 = new Xip() { Codi = "000000000000002" };
@@ -130,30 +135,73 @@ internal class Program
 
             ctx.SaveChanges();
 
-            Console.WriteLine("DADES INSERIDES\n");
+            Console.WriteLine("DADES INSERIDES");
 
             // Llegir els animals de la base de dades
             List<Animal> llista = ctx.Animals.Include(a => a.Xip).ToList();
 
             // Mostrar tots els animals amb el codi del seu xip
-            Console.WriteLine("LLISTA D'ANIMALS:\n");
+            Console.WriteLine("LLISTA D'ANIMALS:");
 
             foreach (Animal a in llista)
             {
                 Console.WriteLine(a.ToString());
             }
             
-            AnimalService service = new AnimalService(ctx);
-            
-            Console.WriteLine("LLISTA D'AUS DISPONIBLES:\n");
-            foreach (Animal au in service.GetDisponibles(Especie.AU))
+            Console.WriteLine("LLISTA D'AUS DISPONIBLES:");
+            foreach (Animal au in animalService.GetDisponibles(Especie.AU))
             {
                 Console.WriteLine(au.ToString());
             }
             
-            Console.WriteLine("ANIMAL AMB XIP 1:"+ service.CercaPerXip("000000000000001"));
-            Console.WriteLine("ANIMAL AMB XIP 12:"); 
-            Console.WriteLine(service.CercaPerXip("000000000000012"));
+            Console.WriteLine("ANIMAL AMB XIP 1:"+ animalService.CercaPerXip("000000000000001"));
+            Console.WriteLine("ANIMAL AMB XIP 12:");
+            Console.WriteLine(animalService.CercaPerXip("000000000000012"));
+                
+            
+            Console.WriteLine("--------------- PROVES ACTIVITAT 2 ---------------");
+            // crear i afegir adoptants
+            Adoptant adoptant1 = new Adoptant()
+            {
+                DNI = "12345678Z",
+                Nom = "Marta",
+                Cognoms = "Puig Soler",
+                TeJardi = true,
+            };
+            Adoptant adoptant2 = new Adoptant()
+            {
+                DNI = "87654321X",
+                Nom = "Pau",
+                Cognoms = "Ibañez",
+                TeJardi = false
+            };
+
+            ctx.Adoptants.Add(adoptant1);
+            ctx.Adoptants.Add(adoptant2);
+            ctx.SaveChanges();
+            
+            // tres bien
+            adoptantService.Adoptar(adoptant1.DNI, animal1.Xip.Codi);
+            adoptantService.Adoptar(adoptant1.DNI, animal2.Xip.Codi);
+            adoptantService.Adoptar(adoptant1.DNI, animal3.Xip.Codi);
+            
+            // mal
+            adoptantService.Adoptar(adoptant2.DNI, animal1.Xip.Codi); // ja esta adoptat
+            adoptantService.Adoptar(adoptant2.DNI, animal4.Xip.Codi); // gos ha de tenir jardi
+            adoptantService.Adoptar("123456789A", animal5.Xip.Codi); // no existeix dni
+            adoptantService.Adoptar(adoptant2.DNI, "000000000000067"); // no existeix chip
+            adoptantService.Adoptar(adoptant1.DNI, animal6.Xip.Codi); // maxim d'animals
+            
+            Console.WriteLine("Abans de retornar");
+            Console.WriteLine(animal1.ToString());
+            Console.WriteLine(adoptant1.ToString());
+            adoptantService.Retornar(animal1.Xip.Codi);
+            
+            Console.WriteLine("Despres de retornar: "+animal1);
+            Console.WriteLine(animal1.ToString());
+            Console.WriteLine(adoptant1.ToString());
+
+            
         }
     }
 }

@@ -16,10 +16,12 @@ public class Animal
     public bool EstaAdoptat { get; set; }
     public DateTime? DataAdopcio { get; set; }
     [Precision(8, 2)] public decimal QuotaAdopcio { get; set; }
+    
     [Required] public int XipID { get; set; }
-    
     public virtual Xip Xip { get; set; }
-    
+
+    public virtual Adoptant? Adoptant { get; set; }
+
     public Animal()
     {
         DataEntrada = DateTime.Now;
@@ -43,7 +45,9 @@ public class Animal
     
     public override string ToString()
     {
-        return $"Animal {AnimalID}: [Nom = {Nom}, Especie = {Especie}, EsFemella = {EsFemella}, DataNaixement = {DataNaixement}, DataEntrada = {DataEntrada}, Pes = {Pes}, EstaAdoptat = {EstaAdoptat}, DataAdopcio = {DataAdopcio}, QuotaAdopcio = {QuotaAdopcio}, Xip = {Xip.ToString()}]";
+        string adoptantText = Adoptant == null ? "" : "Adoptant = " + Adoptant.Nom;
+        return
+            $"Animal {AnimalID}: [Nom = {Nom}, Especie = {Especie}, EsFemella = {EsFemella}, DataNaixement = {DataNaixement}, DataEntrada = {DataEntrada}, Pes = {Pes}, EstaAdoptat = {EstaAdoptat}, DataAdopcio = {DataAdopcio}, QuotaAdopcio = {QuotaAdopcio}, Xip = {Xip.ToString()}, {adoptantText}]";
     }
 
 }

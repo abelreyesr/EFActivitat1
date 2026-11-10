@@ -9,6 +9,7 @@ public class RefugiContext : DbContext
     
     public DbSet<Animal> Animals { get; set; }
     public DbSet<Xip> Xips { get; set; }
+    public DbSet<Adoptant> Adoptants { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -17,13 +18,23 @@ public class RefugiContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        // relacio 1-1 animal-xip
         modelBuilder.Entity<Animal>()
             .HasOne(a => a.Xip)
             .WithOne(x => x.Animal)
             .HasForeignKey<Animal>(a => a.XipID)
             .IsRequired();
 
-        modelBuilder.Entity<Xip>()
-            .HasIndex(x => x.Codi);
+        // relacio 1-N adoptant-animals
+        modelBuilder.Entity<Animal>()
+            .HasOne(a => a.Adoptant)
+            .WithMany(d => d.Animals)
+            .HasForeignKey("AdoptantID")
+            .IsRequired(false);
+
+        // enums en strings en comptes de id
+        modelBuilder.Entity<Animal>()
+            .Property(a => a.Especie)
+            .HasConversion<string>();
     }
 }
