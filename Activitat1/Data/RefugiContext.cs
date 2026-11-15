@@ -10,6 +10,7 @@ public class RefugiContext : DbContext
     public DbSet<Animal> Animals { get; set; }
     public DbSet<Xip> Xips { get; set; }
     public DbSet<Adoptant> Adoptants { get; set; }
+    public DbSet<Voluntari> Voluntaris { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -32,9 +33,19 @@ public class RefugiContext : DbContext
             .HasForeignKey("AdoptantID")
             .IsRequired(false);
 
+        // relacio N-M voluntari-animals
+        modelBuilder.Entity<Voluntari>()
+            .HasMany(v => v.Animals)
+            .WithMany(a => a.Voluntaris)
+            .UsingEntity(j => j.ToTable("Cura"));
+        
         // enums en strings en comptes de id
         modelBuilder.Entity<Animal>()
             .Property(a => a.Especie)
+            .HasConversion<string>();
+        
+        modelBuilder.Entity<Voluntari>()
+            .Property(v => v.Torn)
             .HasConversion<string>();
     }
 }

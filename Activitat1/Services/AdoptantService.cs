@@ -56,6 +56,13 @@ public class AdoptantService
         animal.EstaAdoptat = true;
         animal.DataAdopcio = DateTime.Today;
 
+        // desassignar animal del voluntari
+        VoluntariService voluntariService = new VoluntariService(ctx);
+        foreach (Voluntari voluntari in animal.Voluntaris)
+        {
+            voluntariService.DesassignarAnimal(voluntari.Nom, animal.Xip.Codi);
+        }
+        
         ctx.Adoptants.Update(adoptant);
         ctx.Animals.Update(animal);
         ctx.SaveChanges();

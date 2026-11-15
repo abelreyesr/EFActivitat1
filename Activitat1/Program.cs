@@ -16,6 +16,7 @@ internal class Program
 
             AnimalService animalService = new AnimalService(ctx);
             AdoptantService adoptantService = new AdoptantService(ctx);
+            VoluntariService voluntariService = new VoluntariService(ctx);
 
             
             Console.WriteLine("--------------- PROVES ACTIVITAT 1 ---------------");
@@ -208,6 +209,52 @@ internal class Program
 
             adoptantService.LlistatAdoptants(0);
             adoptantService.LlistatAdoptants(2);
+            
+            Console.WriteLine("--------------- PROVES ACTIVITAT 3 ---------------");
+            
+            // crear voluntaris
+            Voluntari voluntari1 = new Voluntari()
+            {
+                Nom = "Aina",
+                Torn = Torn.MATI
+            };
+            Voluntari voluntari2 = new Voluntari()
+            {
+                Nom = "Joan",
+                Torn = Torn.TARDA
+            };
+            Voluntari voluntari3 = new Voluntari()
+            {
+                Nom = "Nuria",
+                Torn = Torn.CAP_DE_SETMANA
+            };
+            
+            ctx.Voluntaris.Add(voluntari1);
+            ctx.Voluntaris.Add(voluntari3);
+            ctx.Voluntaris.Add(voluntari2);
+
+            ctx.SaveChanges();
+
+            // assignar animals
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal1.Xip.Codi);
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal4.Xip.Codi);
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal3.Xip.Codi);
+            voluntariService.AssignarAnimal(voluntari2.Nom, animal5.Xip.Codi);
+            
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal1.Xip.Codi);
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal7.Xip.Codi);
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal8.Xip.Codi);
+            voluntariService.AssignarAnimal(voluntari1.Nom, animal9.Xip.Codi);
+            
+            // desassignar animals
+            adoptantService.Adoptar(adoptant1.DNI, animal1.Xip.Codi);
+            
+            // passeig
+            voluntariService.RegistrarPasseig(voluntari1.Nom, animal1.Xip.Codi, 15);
+            voluntariService.RegistrarPasseig(voluntari1.Nom, animal4.Xip.Codi, 15);
+            voluntariService.RegistrarPasseig(voluntari1.Nom, animal4.Xip.Codi, 22);
+            Console.WriteLine($"{voluntari1.Nom} total minuts: {voluntari1.MinutsPasseig}");
+            voluntariService.RegistrarPasseig(voluntari2.Nom, animal7.Xip.Codi, 22);
         }
     }
 }
