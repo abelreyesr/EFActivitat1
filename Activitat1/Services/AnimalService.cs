@@ -22,7 +22,7 @@ public class AnimalService
 
     public List<Animal> GetTots() => ctx.Animals.ToList();
 
-    public List<Animal> GetDisponibles(string codiXip)
+    public List<Animal>? Descendents(string codiXip)
     {
         Animal? animal = ctx.Animals.FirstOrDefault(a => a.Xip.Codi == codiXip);
         if (animal == null)
@@ -33,7 +33,18 @@ public class AnimalService
 
         List<Animal> descendents = new List<Animal>();
 
+        AfegirDescendents(descendents, animal);
+        
         return descendents;
+    }
+
+    private void AfegirDescendents(List<Animal> descendents, Animal animal)
+    {
+        foreach (Animal d in animal.Cries)
+        {
+            descendents.Add(d);
+            AfegirDescendents(descendents, d);
+        }
     }
     
     public Animal? CercaPerXip(string codiXip)
@@ -57,6 +68,16 @@ public class AnimalService
             Console.WriteLine($"ERROR: No existeix cria amb el xip {codiXipCria}");
             return false;
         }
+
+        if (codiXipMare == null)
+        {
+            cria.Mare = null;
+            ctx.SaveChanges();
+        
+            Console.WriteLine($"{cria.Nom} ja no té mare assignada");
+            return true;
+        }
+        
         Animal? mare = ctx.Animals.FirstOrDefault(a => a.Xip.Codi == codiXipMare);
         if (mare == null)
         {
@@ -76,8 +97,9 @@ public class AnimalService
             return false;
         }
 
-        cria.Mare.Cries.Remove(cria);
+        if(cria.Mare != null) cria.Mare.Cries.Remove(cria);
         cria.Mare = mare;
+        cria.MareID = mare.AnimalID;
         mare.Cries.Add(cria);
 
         ctx.SaveChanges();
@@ -106,7 +128,7 @@ public class AnimalService
             Console.WriteLine($"ERROR: {cria.Nom} es {cria.Especie} i {mare.Nom} es {mare.Especie}, han de ser de la mateixa especie");
             return false;
         }
-        if (cria.DataNaixement >= mare.DataNaixement)
+        if (cria.DataNaixement <= mare.DataNaixement)
         {
             Console.WriteLine($"ERROR: {cria.Nom} no pot ser major a la mare {mare.Nom}");
             return false;
@@ -114,6 +136,7 @@ public class AnimalService
         
         mare.Cries.Add(cria);
         cria.Mare = mare;
+        cria.MareID = mare.AnimalID;
 
         ctx.SaveChanges();
         
