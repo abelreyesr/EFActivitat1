@@ -20,6 +20,11 @@ public class Animal
     [Required] public int XipID { get; set; }
     public virtual Xip Xip { get; set; }
 
+    public int? MareID { get; set; }
+    public virtual Animal? Mare { get; set; }
+    public virtual ICollection<Animal> Cries { get; set; }
+
+    
     public virtual Adoptant? Adoptant { get; set; }
     public virtual ICollection<Voluntari> Voluntaris { get; set; }
 
@@ -30,6 +35,7 @@ public class Animal
         DataAdopcio = null;
         QuotaAdopcio = 0;
         Voluntaris = new HashSet<Voluntari>();
+        Cries = new HashSet<Animal>();
     }
     
     public Animal(string nom, Especie especie, bool esFemella, DateTime dataNaixement, DateTime dataEntrada, double pes, bool estaAdoptat, DateTime? dataAdopcio, decimal quotaAdopcio)

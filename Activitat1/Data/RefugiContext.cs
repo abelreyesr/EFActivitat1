@@ -33,11 +33,19 @@ public class RefugiContext : DbContext
             .HasForeignKey("AdoptantID")
             .IsRequired(false);
 
-        // relacio N-M voluntari-animals
+        // relacio N-M voluntari-animals ex3
         modelBuilder.Entity<Voluntari>()
             .HasMany(v => v.Animals)
             .WithMany(a => a.Voluntaris)
             .UsingEntity(j => j.ToTable("Cura"));
+        
+        // recursiva mare cires ex4
+        modelBuilder.Entity<Animal>()
+            .HasOne(a => a.Mare)
+            .WithMany(a => a.Cries)
+            .HasForeignKey("MareID")
+            .IsRequired(false)
+            .OnDelete(DeleteBehavior.Restrict);
         
         // enums en strings en comptes de id
         modelBuilder.Entity<Animal>()
