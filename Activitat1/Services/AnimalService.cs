@@ -150,7 +150,7 @@ public class AnimalService
         Console.WriteLine($"Calculant la despesa acumulada de cada animal per aquest mes...");
 
         decimal totalMes = 0;
-        Animal animalMesCar = null;
+        Animal? animalMesCar = null;
         decimal preuAnimalMesCar = 0;
         
         foreach (Animal a in ctx.Animals.ToList())
@@ -200,7 +200,8 @@ public class AnimalService
                 
             Console.WriteLine($"{a.Nom}: {previ} + {afegit} = {a.DespesaAcumulada}" + modText);
         }
-            Console.WriteLine($"Despesa total del mes: {totalMes}");
-            Console.WriteLine($"Animal més car: {animalMesCar.Nom} (amb {preuAnimalMesCar}), xip {animalMesCar.Xip.Codi}");
+        
+        Console.WriteLine($"Despesa total del mes: {totalMes}");
+        if(animalMesCar != null) Console.WriteLine($"Animal més car: {animalMesCar.Nom} (amb {preuAnimalMesCar}), xip {animalMesCar.Xip.Codi}");
     }
 }

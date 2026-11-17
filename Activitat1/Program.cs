@@ -343,7 +343,17 @@ internal class Program
             
             
             Console.WriteLine("--------------- PROVES ACTIVITAT 5 ---------------");
+            Adoptant adoptant3 = new Adoptant()
+            {
+                DNI = "12349678Z",
+                Nom = "Tercero",
+                Cognoms = "Tercerez",
+                TeJardi = true,
+            };
+            ctx.Adoptants.Add(adoptant3);
+            
             animalService.CalcularDespesaMes();
+            adoptantService.Adoptar(adoptant3.DNI, coco.Xip.Codi);
             animalService.CalcularDespesaMes();
         }
     }
