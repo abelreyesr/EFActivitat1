@@ -144,4 +144,63 @@ public class AnimalService
         
         return true;
     }
+
+    public void CalcularDespesaMes()
+    {
+        Console.WriteLine($"Calculant la despesa acumulada de cada animal per aquest mes...");
+
+        decimal totalMes = 0;
+        Animal animalMesCar = null;
+        decimal preuAnimalMesCar = 0;
+        
+        foreach (Animal a in ctx.Animals.ToList())
+        {
+            if (a.EstaAdoptat) continue;
+            
+            decimal previ = a.DespesaAcumulada;
+            decimal afegit = 0;
+            
+            switch (a.Especie)
+            {
+                case Especie.GOS: afegit += 60; break;
+                case Especie.GAT: afegit += 40; break;
+                case Especie.CONILL: afegit += 15; break;
+                case Especie.AU: afegit += 10; break;
+                case Especie.ALTRES: afegit += 20; break;
+            }
+
+            // MODIFICADORS
+            bool modVoluntari = a.Voluntaris.Count > 0;
+            bool modEdat = DateTime.Today.Year - a.DataNaixement.Year >= 8;
+            
+            if (modVoluntari) afegit *= 0.9M;
+            if (modEdat) afegit *= 1.3M;
+
+            // per a cada cria sense adoptar
+            int modCries = 0;
+            foreach (Animal cria in a.Cries) if (!cria.EstaAdoptat) modCries++;
+            afegit *= 1 + 0.1M * modCries;
+            
+            a.DespesaAcumulada = previ + afegit;
+            ctx.SaveChanges();
+            
+            // calcular total i animal mes car
+            totalMes += afegit;
+            if (afegit > preuAnimalMesCar)
+            {
+                preuAnimalMesCar = afegit;
+                animalMesCar = a;
+            }
+            
+            
+            string modText = "";
+            if (modVoluntari) modText += " - sense voluntaris";
+            if (modEdat) modText += $" - major de 8 anys ({DateTime.Today.Year - a.DataNaixement.Year})";
+            if (modCries > 0) modText += $" - {modCries} cries sense adoptar";
+                
+            Console.WriteLine($"{a.Nom}: {previ} + {afegit} = {a.DespesaAcumulada}" + modText);
+        }
+            Console.WriteLine($"Despesa total del mes: {totalMes}");
+            Console.WriteLine($"Animal més car: {animalMesCar.Nom} (amb {preuAnimalMesCar}), xip {animalMesCar.Xip.Codi}");
+    }
 }

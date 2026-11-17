@@ -340,6 +340,11 @@ internal class Program
             MostrarDescendents("724098100000012");     // Coco: [Rocky, Bimba, Toby]
             MostrarDescendents("724098100000013");     // Rocky: [] (no té cries)
             MostrarDescendents("724098100000999");     // no existeix: missatge i []
+            
+            
+            Console.WriteLine("--------------- PROVES ACTIVITAT 5 ---------------");
+            animalService.CalcularDespesaMes();
+            animalService.CalcularDespesaMes();
         }
     }
 }

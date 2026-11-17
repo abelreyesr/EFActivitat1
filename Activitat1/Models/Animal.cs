@@ -23,7 +23,8 @@ public class Animal
     public int? MareID { get; set; }
     public virtual Animal? Mare { get; set; }
     public virtual ICollection<Animal> Cries { get; set; }
-
+    
+    [Precision(8, 2)] public decimal DespesaAcumulada { get; set; }
     
     public virtual Adoptant? Adoptant { get; set; }
     public virtual ICollection<Voluntari> Voluntaris { get; set; }
@@ -34,6 +35,7 @@ public class Animal
         EstaAdoptat = false;
         DataAdopcio = null;
         QuotaAdopcio = 0;
+        DespesaAcumulada = 0;
         Voluntaris = new HashSet<Voluntari>();
         Cries = new HashSet<Animal>();
     }
