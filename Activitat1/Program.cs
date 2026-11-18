@@ -1,5 +1,6 @@
 ﻿using Activitat1.Data;
 using Activitat1.Models;
+using Castle.Components.DictionaryAdapter;
 using csharp1.Services;
 using Microsoft.EntityFrameworkCore;
 
@@ -363,6 +364,23 @@ internal class Program
             visitaService.EstadistiquesPerMotiu();
             voluntariService.LlistatVoluntaris(1);
             voluntariService.LlistatVoluntaris(3);
+            
+            // crear voluntari amant dels ancians per asignar 
+            Voluntari voluntariSeniors = new Voluntari() { Nom = "YayoLover", Torn = Torn.MATI };
+            ctx.Voluntaris.Add(voluntariSeniors); ctx.SaveChanges();
+            voluntariService.AssignarAnimal(voluntariSeniors.Nom, nala.Xip.Codi);
+
+            Console.WriteLine("---Llista de voluntaris amb animals de més de 8 anys---");
+            foreach (var v in voluntariService.VoluntarisDeSeniors())
+            {
+                List<string> seniors = new List<string>();
+                foreach (var a in v.Animals) if (DateTime.Today.Year - a.DataNaixement.Year >= 8) seniors.Add(a.Nom);
+
+                string nomsSeniors = String.Join(", ", seniors);
+                Console.WriteLine($"{v.Nom} - {nomsSeniors}");
+            }
+            
+            visitaService.EstadistiquesPerMes();
         }
     }
 }

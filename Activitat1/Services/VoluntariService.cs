@@ -140,5 +140,11 @@ public class VoluntariService
             Console.WriteLine($"{v.Nom} - {v.Animals.Count} animals - {v.MinutsPasseig}min");
         }
     }
+    
+    public List<Voluntari> VoluntarisDeSeniors()
+    {
+        DateTime faViutAnys = DateTime.Today.AddYears(-8);
 
+        return ctx.Voluntaris.Where(v => v.Animals.Any(a => a.DataNaixement < faViutAnys)).ToList();
+    }
 }

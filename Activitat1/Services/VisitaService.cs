@@ -91,4 +91,26 @@ public class VisitaService
             Console.WriteLine($"{m.Motiu}: {m.TotalVisites} visites amb un cost total de {m.CostTotal} i un cost mitjà de {m.CostMitja.ToString("F2")}");
         }
     }
+    
+    public void EstadistiquesPerMes()
+    {
+        Console.WriteLine("---ESTADÍSTIQUES PER MES---");
+        
+        var perMotiu = ctx.Visites
+            .GroupBy(v => new{v.Data.Year, v.Data.Month})
+            .Select(m => new
+            {
+                Any = m.Key.Year,
+                Mes = m.Key.Month,
+                TotalVisites = m.Count(),
+                CostTotal = m.Sum(v => v.Cost),
+            })
+            .OrderByDescending(m => m.CostTotal)
+            .ToList();
+        
+        foreach (var m in perMotiu)
+        {
+            Console.WriteLine($"{m.Mes}/{m.Any}: {m.TotalVisites} visites amb un cost total de {m.CostTotal}");
+        }
+    }
 }
