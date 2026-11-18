@@ -125,4 +125,20 @@ public class VoluntariService
         
         return true;
     }
+    
+    public void LlistatVoluntaris(int minAnimals)
+    {
+        Console.WriteLine($"---LLISTA DE VOLUNTARIS AMB {minAnimals} O MES ANIMALS---");
+        
+        var voluntaris = ctx.Voluntaris
+            .Where(v => v.Animals.Count >= minAnimals)
+            .OrderByDescending(v => v.Animals.Count)
+            .ToList();
+        
+        foreach (var v in voluntaris)
+        {
+            Console.WriteLine($"{v.Nom} - {v.Animals.Count} animals - {v.MinutsPasseig}min");
+        }
+    }
+
 }

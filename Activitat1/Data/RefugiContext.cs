@@ -11,6 +11,7 @@ public class RefugiContext : DbContext
     public DbSet<Xip> Xips { get; set; }
     public DbSet<Adoptant> Adoptants { get; set; }
     public DbSet<Voluntari> Voluntaris { get; set; }
+    public DbSet<Visita> Visites { get; set; }
     
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
@@ -46,7 +47,15 @@ public class RefugiContext : DbContext
             .HasForeignKey("MareID")
             .IsRequired(false)
             .OnDelete(DeleteBehavior.Restrict);
-        
+
+        // Animals-Visites ex6
+        modelBuilder.Entity<Visita>()
+            .HasOne(v => v.Animal)
+            .WithMany(a => a.Visites)
+            .HasForeignKey("AnimalID")
+            .IsRequired(true)
+            .OnDelete(DeleteBehavior.Cascade);
+
         // enums en strings en comptes de id
         modelBuilder.Entity<Animal>()
             .Property(a => a.Especie)
@@ -54,6 +63,10 @@ public class RefugiContext : DbContext
         
         modelBuilder.Entity<Voluntari>()
             .Property(v => v.Torn)
+            .HasConversion<string>();
+        
+        modelBuilder.Entity<Visita>()
+            .Property(v => v.Motiu)
             .HasConversion<string>();
     }
 }

@@ -17,6 +17,7 @@ internal class Program
             AnimalService animalService = new AnimalService(ctx);
             AdoptantService adoptantService = new AdoptantService(ctx);
             VoluntariService voluntariService = new VoluntariService(ctx);
+            VisitaService visitaService = new VisitaService(ctx);
 
             
             Console.WriteLine("--------------- PROVES ACTIVITAT 1 ---------------");
@@ -355,6 +356,13 @@ internal class Program
             animalService.CalcularDespesaMes();
             adoptantService.Adoptar(adoptant3.DNI, coco.Xip.Codi);
             animalService.CalcularDespesaMes();
+            
+            Console.WriteLine("--------------- PROVES ACTIVITAT 6 ---------------");
+            visitaService.GenerarVisites(30);
+            animalService.EstadistiquesPerEspecie();
+            visitaService.EstadistiquesPerMotiu();
+            voluntariService.LlistatVoluntaris(1);
+            voluntariService.LlistatVoluntaris(3);
         }
     }
 }

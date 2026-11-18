@@ -29,6 +29,8 @@ public class Animal
     public virtual Adoptant? Adoptant { get; set; }
     public virtual ICollection<Voluntari> Voluntaris { get; set; }
 
+    public virtual ICollection<Visita> Visites { get; set; }
+    
     public Animal()
     {
         DataEntrada = DateTime.Now;
@@ -38,6 +40,7 @@ public class Animal
         DespesaAcumulada = 0;
         Voluntaris = new HashSet<Voluntari>();
         Cries = new HashSet<Animal>();
+        Visites = new HashSet<Visita>();
     }
     
     public Animal(string nom, Especie especie, bool esFemella, DateTime dataNaixement, DateTime dataEntrada, double pes, bool estaAdoptat, DateTime? dataAdopcio, decimal quotaAdopcio)

@@ -204,4 +204,27 @@ public class AnimalService
         Console.WriteLine($"Despesa total del mes: {totalMes}");
         if(animalMesCar != null) Console.WriteLine($"Animal més car: {animalMesCar.Nom} (amb {preuAnimalMesCar}), xip {animalMesCar.Xip.Codi}");
     }
+
+    public void EstadistiquesPerEspecie()
+    {
+        Console.WriteLine("---ANIMALS PER ESPÈCIE---");
+        
+        var perEspecie = ctx.Animals
+            .GroupBy(a => a.Especie)
+            .Select(e => new
+            {
+                Especie = e.Key,
+                Animals = e.Count(),
+                Adoptats = e.Count(a => a.EstaAdoptat),
+                Disponibles = e.Count(a => !a.EstaAdoptat),
+                PesMitja = e.Average(a => a.Pes)
+            })
+            .OrderByDescending(e => e.Animals)
+            .ToList();
+        
+        foreach (var a in perEspecie)
+        {
+            Console.WriteLine($"{a.Especie}: {a.Animals} animals, {a.Adoptats} adoptats, {a.Disponibles} disponibles, pes mitja: {a.PesMitja.ToString("F2")}");
+        }
+    }
 }

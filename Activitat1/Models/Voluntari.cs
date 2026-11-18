@@ -23,7 +23,7 @@ public class Voluntari
         return $"Voluntari {VoluntariID}: [Nom = {Nom}, Torn = {Torn}, MinutsPasseig = {MinutsPasseig}, Animals = [{LlistaAnimals()}] ]";
     }
     
-    public string LlistaAnimals()
+    private string LlistaAnimals()
     {
         string msg = "";
 
