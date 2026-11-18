@@ -58,7 +58,6 @@ public class VisitaService
             };
 
             visites[i] = visita;
-            animal.Visites.Add(visita);
             ctx.Visites.Add(visita);
         }
 
